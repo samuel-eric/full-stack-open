@@ -18,26 +18,31 @@ const Statistics = (props) => {
 
 	const all = good + neutral + bad;
 	const averageScore = (good - bad) / all;
-	const positivePercentage = (good / all) * 100;
+	const positivePercentage = (good / all) * 100 + '%';
 
 	return (
 		<div>
 			<h1>statistics</h1>
-			<StatisticLine text="good" value={good} />
-			<StatisticLine text="neutral" value={neutral} />
-			<StatisticLine text="bad" value={bad} />
-			<StatisticLine text="all" value={all} />
-			<StatisticLine text="average" value={averageScore} />
-			<StatisticLine text="positive" value={positivePercentage} />
+			<table>
+				<tbody>
+					<StatisticLine text="good" value={good} />
+					<StatisticLine text="neutral" value={neutral} />
+					<StatisticLine text="bad" value={bad} />
+					<StatisticLine text="all" value={all} />
+					<StatisticLine text="average" value={averageScore} />
+					<StatisticLine text="positive" value={positivePercentage} />
+				</tbody>
+			</table>
 		</div>
 	);
 };
 
 const StatisticLine = ({ text, value }) => {
 	return (
-		<p>
-			{text} {value}
-		</p>
+		<tr>
+			<td>{text}</td>
+			<td>{value}</td>
+		</tr>
 	);
 };
 
