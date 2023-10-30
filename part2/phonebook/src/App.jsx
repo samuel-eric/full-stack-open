@@ -23,6 +23,7 @@ const App = () => {
 		) {
 			alert(`${newName} is already added to phonebook`);
 			setNewName('');
+			setNewNumber('');
 			return;
 		}
 		const updatedPersons = persons.concat({
