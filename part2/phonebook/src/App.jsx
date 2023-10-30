@@ -6,6 +6,15 @@ const App = () => {
 
 	const handleSubmitNewName = (event) => {
 		event.preventDefault();
+		if (
+			persons.find(
+				(person) => person.name.toLowerCase() === newName.toLowerCase()
+			)
+		) {
+			alert(`${newName} is already added to phonebook`);
+			setNewName('');
+			return;
+		}
 		const updatedPersons = persons.concat({ name: newName });
 		setPersons(updatedPersons);
 		setNewName('');
