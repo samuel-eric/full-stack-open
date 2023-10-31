@@ -16,22 +16,46 @@ const App = () => {
 
 	const handleSubmitNewEntry = (event) => {
 		event.preventDefault();
-		if (
-			persons.find(
+		if (newName === '' || newNumber === '') {
+			alert('Please fill the add a new form');
+		} else {
+			const duplicatePerson = persons.find(
 				(person) => person.name.toLowerCase() === newName.toLowerCase()
+			);
+			if (duplicatePerson) {
+				updatePerson(duplicatePerson);
+				return;
+			}
+			const newPerson = { name: newName, number: newNumber };
+			personService.create(newPerson).then((returnedPerson) => {
+				setPersons(persons.concat(returnedPerson));
+				setNewName('');
+				setNewNumber('');
+			});
+		}
+	};
+
+	const updatePerson = (duplicatePerson) => {
+		if (
+			confirm(
+				`${duplicatePerson.name} is already added to phonebook, replace the old number with a new one?`
 			)
 		) {
-			alert(`${newName} is already added to phonebook`);
-			setNewName('');
-			setNewNumber('');
-			return;
+			personService
+				.update(duplicatePerson.id, {
+					name: duplicatePerson.name,
+					number: newNumber,
+				})
+				.then((returnedPerson) => {
+					setPersons(
+						persons.map((person) =>
+							person.id !== returnedPerson.id ? person : returnedPerson
+						)
+					);
+				});
 		}
-		const newPerson = { name: newName, number: newNumber };
-		personService.create(newPerson).then((returnedPerson) => {
-			setPersons(persons.concat(returnedPerson));
-			setNewName('');
-			setNewNumber('');
-		});
+		setNewName('');
+		setNewNumber('');
 	};
 
 	const handleAddName = (event) => {
