@@ -3,12 +3,15 @@ import personService from './service/person';
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
+import Notification from './Notification';
 
 const App = () => {
 	const [persons, setPersons] = useState([]);
 	const [newName, setNewName] = useState('');
 	const [newNumber, setNewNumber] = useState('');
 	const [searchWord, setSearchWord] = useState('');
+	const [message, setMessage] = useState(null);
+	const [notificationType, setNotificationType] = useState('');
 
 	useEffect(() => {
 		personService.getAll().then((initialPersons) => setPersons(initialPersons));
@@ -29,6 +32,7 @@ const App = () => {
 			const newPerson = { name: newName, number: newNumber };
 			personService.create(newPerson).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
+				showSuccessNotification(returnedPerson.name);
 				setNewName('');
 				setNewNumber('');
 			});
@@ -56,6 +60,15 @@ const App = () => {
 		}
 		setNewName('');
 		setNewNumber('');
+	};
+
+	const showSuccessNotification = (name) => {
+		setMessage(`Added ${name}`);
+		setNotificationType('success');
+		setTimeout(() => {
+			setMessage(null);
+			setNotificationType('');
+		}, 5000);
 	};
 
 	const handleAddName = (event) => {
@@ -90,6 +103,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification message={message} type={notificationType} />
 			<Filter searchWord={searchWord} handleSearch={handleSearch} />
 			<h2>Add a new</h2>
 			<PersonForm
