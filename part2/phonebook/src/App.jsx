@@ -32,7 +32,7 @@ const App = () => {
 			const newPerson = { name: newName, number: newNumber };
 			personService.create(newPerson).then((returnedPerson) => {
 				setPersons(persons.concat(returnedPerson));
-				showSuccessNotification(returnedPerson.name);
+				showNotification(`Added ${returnedPerson.name}`, 'success');
 				setNewName('');
 				setNewNumber('');
 			});
@@ -56,15 +56,21 @@ const App = () => {
 							person.id !== returnedPerson.id ? person : returnedPerson
 						)
 					);
+				})
+				.catch((error) => {
+					showNotification(
+						`Information of ${duplicatePerson.name} has already been removed`,
+						'error'
+					);
 				});
 		}
 		setNewName('');
 		setNewNumber('');
 	};
 
-	const showSuccessNotification = (name) => {
-		setMessage(`Added ${name}`);
-		setNotificationType('success');
+	const showNotification = (message, type) => {
+		setMessage(message);
+		setNotificationType(type);
 		setTimeout(() => {
 			setMessage(null);
 			setNotificationType('');
