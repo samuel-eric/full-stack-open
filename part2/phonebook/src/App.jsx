@@ -46,6 +46,16 @@ const App = () => {
 		setSearchWord(event.target.value);
 	};
 
+	const handleRemove = (id) => {
+		if (
+			confirm(`Delete ${persons.find((person) => person.id === id).name} ?`)
+		) {
+			personService
+				.remove(id)
+				.then(() => setPersons(persons.filter((person) => person.id !== id)));
+		}
+	};
+
 	const personsToShow = searchWord
 		? persons.filter(
 				(person) => person.name.toLowerCase().includes(searchWord.toLowerCase())
@@ -66,7 +76,7 @@ const App = () => {
 				handleAddNumber={handleAddNumber}
 			/>
 			<h2>Numbers</h2>
-			<Persons personsToShow={personsToShow} />
+			<Persons personsToShow={personsToShow} handleRemove={handleRemove} />
 		</div>
 	);
 };
