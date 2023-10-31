@@ -28,14 +28,12 @@ const App = () => {
 			setNewNumber('');
 			return;
 		}
-		const updatedPersons = persons.concat({
-			name: newName,
-			number: newNumber,
-			id: persons.length + 1,
+		const newPerson = { name: newName, number: newNumber };
+		axios.post('http://localhost:3001/persons', newPerson).then((response) => {
+			setPersons(persons.concat(response.data));
+			setNewName('');
+			setNewNumber('');
 		});
-		setPersons(updatedPersons);
-		setNewName('');
-		setNewNumber('');
 	};
 
 	const handleAddName = (event) => {
